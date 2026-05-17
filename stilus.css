@@ -1,0 +1,175 @@
+:root {
+  --hatter: #f5f5f5;
+  --felulet: #ffffff;
+  --keret: #e0e0e0;
+  --szoveg: #1a1a1a;
+  --halvany: #666;
+  --fo-szin: #2563eb;
+  --fo-hover: #1d4ed8;
+  --zold: #16a34a;
+  --piros: #dc2626;
+  --arnyek: 0 2px 8px rgba(0,0,0,0.08);
+  --arnyek-hover: 0 6px 20px rgba(0,0,0,0.13);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--hatter);
+  color: var(--szoveg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+button { cursor: pointer; font-family: inherit; border: none; }
+
+/* 1. ANIMÁCIÓ – navigáció felülről csúszik be */
+@keyframes lecsuszas {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+/* 2. ANIMÁCIÓ – kártyák alulról úsznak be */
+@keyframes kartya-be {
+  from { transform: translateY(30px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+/* 3. ANIMÁCIÓ – kosárba gomb lenyomáskor összenyomódik */
+@keyframes nyomas {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(0.92); }
+}
+/* 4. ANIMÁCIÓ – értesítés alulról úszik fel */
+@keyframes ertesites-be {
+  from { transform: translateX(-50%) translateY(60px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* NAVIGÁCIÓ */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--felulet);
+  border-bottom: 1px solid var(--keret);
+  box-shadow: var(--arnyek);
+  height: 60px;
+  display: flex; align-items: center;
+  padding: 0 20px; gap: 12px;
+  animation: lecsuszas 0.5s ease both;
+}
+.logo { font-weight: 700; font-size: 1.1rem; color: var(--fo-szin); white-space: nowrap; }
+.kategoriak { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+.kat-gomb {
+  padding: 6px 14px; border-radius: 20px;
+  background: var(--hatter); border: 1px solid var(--keret);
+  color: var(--szoveg); font-size: 13px; font-weight: 500;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.kat-gomb:hover, .kat-gomb.aktiv { background: var(--fo-szin); color: #fff; border-color: var(--fo-szin); }
+.kereses {
+  padding: 7px 12px; border: 1px solid var(--keret);
+  border-radius: 8px; background: var(--hatter);
+  color: var(--szoveg); font-size: 14px; width: 180px;
+  transition: border-color 0.2s;
+}
+.kereses:focus { outline: none; border-color: var(--fo-szin); }
+.kosar-gomb {
+  background: var(--fo-szin); color: #fff;
+  border-radius: 8px; padding: 7px 14px;
+  font-size: 14px; font-weight: 600; position: relative;
+  transition: background 0.2s;
+}
+.kosar-gomb:hover { background: var(--fo-hover); }
+.kosar-jelveny {
+  position: absolute; top: -6px; right: -6px;
+  background: var(--piros); color: #fff;
+  border-radius: 50%; width: 18px; height: 18px;
+  font-size: 11px; font-weight: 700;
+  display: none; align-items: center; justify-content: center;
+}
+
+/* TERMÉKEK */
+main { flex: 1; max-width: 1200px; margin: 28px auto; padding: 0 20px; width: 100%; }
+.termek-racs { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+.termek-kartya {
+  background: var(--felulet); border: 1px solid var(--keret);
+  border-radius: 10px; box-shadow: var(--arnyek);
+  overflow: hidden; display: flex; flex-direction: column;
+  opacity: 0;
+  animation: kartya-be 0.5s ease forwards;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.termek-kartya:hover { box-shadow: var(--arnyek-hover); transform: translateY(-2px); }
+.termek-kep { width: 100%; height: 200px; object-fit: contain; background: #f9f9f9; padding: 12px; }
+.termek-info { padding: 14px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.termek-nev {
+  font-size: 14px; font-weight: 500;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.termek-ar { font-size: 17px; font-weight: 700; color: var(--fo-szin); }
+.kosarba-gomb {
+  margin-top: auto; background: var(--zold); color: #fff;
+  border-radius: 8px; padding: 8px 0;
+  font-size: 14px; font-weight: 600; width: 100%;
+  transition: filter 0.2s;
+}
+.kosarba-gomb:hover { filter: brightness(0.9); }
+.kosarba-gomb.nyomva { animation: nyomas 0.3s ease; }
+.ures-allapot { text-align: center; padding: 80px 20px; color: var(--halvany); grid-column: 1/-1; }
+.ures-allapot .ikon { font-size: 48px; margin-bottom: 16px; }
+
+/* KOSÁR PANEL */
+.kosar-fedel { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 200; }
+.kosar-fedel.nyitva { display: block; }
+.kosar-panel {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 340px; max-width: 100vw;
+  background: var(--felulet); box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+  display: flex; flex-direction: column; z-index: 201;
+  transform: translateX(100%); transition: transform 0.35s ease;
+}
+.kosar-panel.nyitva { transform: translateX(0); }
+.kosar-fejlec {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px; border-bottom: 1px solid var(--keret);
+  font-weight: 700; font-size: 16px;
+}
+.kosar-zar { background: none; font-size: 22px; color: var(--halvany); transition: color 0.2s; }
+.kosar-zar:hover { color: var(--szoveg); }
+.kosar-termekek { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.kosar-elem { display: flex; gap: 12px; align-items: center; background: var(--hatter); border-radius: 8px; padding: 10px; }
+.kosar-kep { width: 50px; height: 50px; object-fit: contain; border-radius: 6px; background: #fff; }
+.kosar-info { flex: 1; font-size: 13px; }
+.kosar-nev { font-weight: 500; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.kosar-ar { color: var(--fo-szin); font-weight: 600; }
+.kosar-torol { background: none; color: var(--piros); font-size: 18px; padding: 4px; border-radius: 4px; }
+.kosar-torol:hover { background: color-mix(in srgb, var(--piros) 10%, transparent); }
+.kosar-lab { padding: 18px 20px; border-top: 1px solid var(--keret); }
+.kosar-osszeg { display: flex; justify-content: space-between; font-weight: 700; font-size: 16px; margin-bottom: 14px; }
+.rendeles-gomb {
+  width: 100%; background: var(--fo-szin); color: #fff;
+  border-radius: 8px; padding: 11px; font-size: 15px; font-weight: 700; transition: background 0.2s;
+}
+.rendeles-gomb:hover { background: var(--fo-hover); }
+.kosar-ures { text-align: center; color: var(--halvany); padding: 40px 20px; }
+
+/* ÉRTESÍTÉS */
+.ertesites {
+  position: fixed; bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: #1a1a1a; color: #fff;
+  padding: 11px 22px; border-radius: 30px;
+  font-size: 14px; z-index: 999; pointer-events: none; opacity: 0;
+}
+.ertesites.latszik { animation: ertesites-be 0.4s ease forwards; opacity: 1; }
+
+/* LÁBLÉC */
+footer {
+  background: var(--felulet); border-top: 1px solid var(--keret);
+  text-align: center; padding: 18px 20px;
+  color: var(--halvany); font-size: 13px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .kereses { width: 120px; }
+  .kategoriak { display: none; }
+}

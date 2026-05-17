@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebShop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="stilus.css">
+</head>
+<body>
+
+  <nav>
+    <span class="logo">🛒 WebShop</span>
+    <div class="kategoriak" id="kategoriak"></div>
+    <input type="text" class="kereses" id="keresesMezo" placeholder="Keresés...">
+    <button class="kosar-gomb" id="kosarNyitGomb">
+      🛒 Kosár
+      <span class="kosar-jelveny" id="kosarJelveny">0</span>
+    </button>
+  </nav>
+
+  <main>
+    <div class="termek-racs" id="termekRacs"></div>
+  </main>
+
+  <div class="kosar-fedel" id="kosarFedel"></div>
+  <div class="kosar-panel" id="kosarPanel">
+    <div class="kosar-fejlec">
+      🛒 Kosár
+      <button class="kosar-zar" id="kosarZarGomb">✕</button>
+    </div>
+    <div class="kosar-termekek" id="kosarTermekek"></div>
+    <div class="kosar-lab">
+      <div class="kosar-osszeg">
+        <span>Összesen:</span>
+        <span id="kosarVegosszeg">$0.00</span>
+      </div>
+      <button class="rendeles-gomb" id="rendelesGomb">Megrendelés</button>
+    </div>
+  </div>
+
+  <div class="ertesites" id="ertesites"></div>
+
+  <footer>
+    <strong>Máté Kevin Krisztofer</strong><br>
+    &copy; 2026 Minden jog fenntartva.
+  </footer>
+
+  <script src="logika.js"></script>
+</body>
+</html>
